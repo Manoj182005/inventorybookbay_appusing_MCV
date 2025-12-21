@@ -5,6 +5,9 @@ import path from 'path';
 import validationMiddleware from './src/middlewares/validation.middleware.js';
 
 const app = express();
+
+app.use(express.static('public'));
+
 const productsController =
   new ProductsController();
 
@@ -22,7 +25,27 @@ app.get(
   '/add-product',
   productsController.getAddProduct
 );
-app.post('/', validationMiddleware, productsController.postAddProduct);
+
+app.get(
+  '/update-product/:id',
+  productsController.getUpdateProductView
+);
+
+app.post(
+  '/delete-product/:id',
+  productsController.deleteProduct
+);
+
+app.post(
+  '/',
+  validationMiddleware,
+  productsController.postAddProduct
+);
+
+app.post(
+  '/update-product',
+  productsController.postUpdateProduct
+);
 
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
